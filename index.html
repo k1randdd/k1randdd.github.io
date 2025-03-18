@@ -1,6 +1,61 @@
-<html> 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Marine Life Cruelty</title>
+  <link rel="stylesheet" href="styles/main.css">
+</head>
+  <script src="scripts/navigation.js">
+  </script>
 <body>
-Hi This Is Kiran - pycharm edit
-</body>
+  <div id="banner"><h1>Marine Life Cruelty</h1></div>
+  <div id="related_links" class="container"></div>
+  <div id="text_page" class="container"></div>
+  <div id="images_page" class="container"></div>
 
+  <script>
+    function show_page(page_name, prev_page_name)
+    { 
+      page_index = -1
+      for (let p = 0; p < pages.length; p++) {
+        if (pages[p].name == page_name) {
+          page_index = p
+          break
+        }
+      }
+      if (page_index < 0) {
+        document.getElementById("text_page").innerHTML = " --- Cannot find page: " + page_name
+      }
+
+      text_page_link = pages[page_index].text_page
+      choices = pages[page_index].links
+      if (choices.length==0) { choices = all_main_links }
+
+      choices_html = "<p>"
+      for (let i = 0; i < choices.length; i++)
+        if (choices[i][1]!=page_name) {
+          button_html = "<button onclick='show_page(\"" + choices[i][1] + "\",\"" + page_name + "\")'>" + " " + choices[i][0] + " </button>"
+          choices_html += button_html + " "
+        }
+        else
+        {
+          choices_html += "<a class='no_button'>" + choices[i][0] + "</a> "
+        }
+      choices_html += "</p>"
+
+      if (pages[page_index].audio) {
+        var audio = new Audio(pages[page_index].audio);
+        audio.play();
+      }
+
+      document.getElementById("text_page").innerHTML = "<iframe id='text_page_iframe' src='" + text_page_link + "'></iframe>"
+      document.getElementById("related_links").innerHTML = choices_html
+  }
+  
+    show_page("Introduction", "")
+  </script>
+ 
+</body>
 </html>
+
