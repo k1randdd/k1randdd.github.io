@@ -1,6 +1,7 @@
 body {
   margin: 10px;
-  padding: 10px;
+  padding: 0;
+  border: 0;
   font-family: Times New Roman;
   font-size: large;
   background-color: white;
@@ -9,11 +10,31 @@ body {
 
 h1 {
   text-align: left;
-  color: darkblue;
+  display: inline-block;
+  color: black;
   font-family: Arial;
+  background-color: rgba(0, 193, 255, 0.25);
+  padding: 10px;
+  border-radius: 16px;
 }
 
-img {
+h2 {
+  text-align: left;
+  color: black;
+  font-family: Times New Roman;
+}
+
+div {
+  padding-bottom: 15px; font-size: large;
+}
+
+a { 
+ font-size: 24px;
+}
+
+/* For large images, resize them to fill the whole width of the screen */
+
+.fills_screen_width {
   width:100%;
   max-width:90%;
   text-align: center;
@@ -22,3 +43,112 @@ img {
   margin-right:auto;
 }
 
+/* ========= Bullet-list styles: START
+     - can update or add more list styles below ============ */
+
+.two_views div::before {
+  content: "\1F935";
+  display: inline-block; vertical-align: bottom;
+  margin: 6px;
+  font-size: 40px;
+}
+
+.headline_list div::before {
+  content: "\1F41F";
+  display: inline-block; vertical-align: bottom;
+  margin: 6px;
+  font-size: 32px;
+}
+
+.action_list div::before {
+  content: "\1F964";
+  display: inline-block; vertical-align: bottom;
+  margin: 6px;
+  font-size: 32px;
+}
+
+.long_paragraphs div::before {
+  content: "\1F30D";
+  display: inline-block; vertical-align: bottom;
+  margin: 6px;
+  font-size: 40px;
+}
+
+.links_list div a::before {
+  content: "\1F310";
+  display: inline-block; vertical-align: bottom;
+  margin: 6px;
+  font-size: 32px;
+}
+
+.videos_list div a::before {
+  content: "\1F3A5";
+  display: inline-block; vertical-align: bottom;
+  margin: 6px;
+  font-size: 40px;
+}
+
+.research_list div a::before {
+  content: "\1F9EA";
+  display: inline-block; vertical-align: bottom;
+  margin: 6px;
+  font-size: 32px;
+}
+
+/* ========= Bullet-list styles: END ============ */
+
+/* ==== Image Gallery styling: START
+   Use media queries to re-arrange the images on different screen sizes:
+   - for screens larger than 700px wide, it will show four images side by side,
+   - for screens smaller than 700px, it will show two images side by side,
+   - for screens smaller than 500px, the images will stack vertically (100%).
+*/
+
+div.gallery {
+  border: 1px solid #ccc;
+}
+
+div.gallery:hover {
+  border: 1px solid #777;
+}
+
+div.gallery img {
+  width: 100%;
+  height: auto;
+}
+
+div.image_desc {
+  padding: 15px;
+  text-align: center;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.gallery_responsive {
+  padding: 0 6px;
+  float: left;
+  width: 24.99999%;
+}
+
+@media only screen and (max-width: 700px) {
+  .gallery_responsive {
+    width: 49.99999%;
+    margin: 6px 0;
+  }
+}
+
+@media only screen and (max-width: 500px) {
+  .gallery_responsive {
+    width: 100%;
+  }
+}
+
+.gallery_clearfix:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+/* ==== Image Gallery styling: END ==== */

@@ -12,9 +12,10 @@
   <div id="banner"><h1>Marine Life Cruelty</h1></div>
   <div id="related_links" class="container"></div>
   <div id="text_page" class="container"></div>
-  <div id="images_page" class="container"></div>
 
   <script>
+    var audio = false;
+
     function show_page(page_name, prev_page_name)
     { 
       page_index = -1
@@ -32,20 +33,39 @@
       choices = pages[page_index].links
       if (choices.length==0) { choices = all_main_links }
 
-      choices_html = "<p>"
-      for (let i = 0; i < choices.length; i++)
-        if (choices[i][1]!=page_name) {
-          button_html = "<button onclick='show_page(\"" + choices[i][1] + "\",\"" + page_name + "\")'>" + " " + choices[i][0] + " </button>"
-          choices_html += button_html + " "
-        }
-        else
-        {
-          choices_html += "<a class='no_button'>" + choices[i][0] + "</a> "
-        }
-      choices_html += "</p>"
+      //if (choices.length>1)
+      // *** More than one Choice and (Narrow Screen or Too many Choices) ? ***
+      if ((choices.length>1) && ((screen.width < 600) || (choices.length >= 20)))
+      { // *** Present links in a drop-down list. ***
+        choices_html = "<select name=\"choices\" id=\"choices\" onchange=\"show_page(document.getElementById('choices').value,'" + page_name + "')\">"
+        for (let i = 0; i < choices.length; i++)
+          if (choices[i][1]!=page_name) {
+            choices_html += "<option value=\"" + choices[i][1] + "\">" + choices[i][0] + "</option>"
+          }
+          else
+          {
+            choices_html += "<option value=\"" + choices[i][1] + "\" selected disabled>" + choices[i][0] + "</option>"
+          }
+        choices_html += "</select>"
+      }
+      else
+      { // *** Present links as a list of buttons. ***
+        choices_html = "<span>"
+        for (let i = 0; i < choices.length; i++)
+          if (choices[i][1]!=page_name) {
+            button_html = "<button onclick='show_page(\"" + choices[i][1] + "\",\"" + page_name + "\")'>" + " " + choices[i][0] + " </button>"
+            choices_html += button_html + " "
+          }
+          else
+          {
+            choices_html += "<a class='no_button'>" + choices[i][0] + "</a> "
+          }
+        choices_html += "</span>"
+      }
 
+      if (audio!=false) { audio.pause(); audio=false; }
       if (pages[page_index].audio) {
-        var audio = new Audio(pages[page_index].audio);
+        audio = new Audio(pages[page_index].audio);
         audio.play();
       }
 
@@ -53,7 +73,7 @@
       document.getElementById("related_links").innerHTML = choices_html
   }
   
-    show_page("Introduction", "")
+    show_page("Two Views", "")   // *** You can choose any page to be the Start Page here. ***
   </script>
  
 </body>
