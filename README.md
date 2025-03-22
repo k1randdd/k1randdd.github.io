@@ -100,12 +100,12 @@ Thus the website file structure is:
 
 ```
 index.html
-/scripts/_<filename>_.js
-/articles/_<filename>_.html
-/images/_<filename>_.png
-        _<filename>_.jpg
-/styles/_<filename>_.css
-/sounds/_<filename>_.mp3
+/scripts/<filename>.js
+/articles/<filename>.html
+/images/<filename>.png
+        <filename>.jpg
+/styles/<filename>.css
+/sounds/<filename>.mp3
 ```
 
 ## Web Page Layout
@@ -122,26 +122,14 @@ Three areas:
 - navigation links
 - article page
 
-|.                                                        |
-|            Banner- Title    (help page links)           |
-|.                                                        |
------------------------------------------------------------
-|   <links to related articles, i.e. navigation>          |
------------------------------------------------------------
-|.                                                        |
-|.                                                        |
-|.                                                        |
-|.                                                        |
-|                     <article-page>                      |
-|                                                         |
-|               (text, images, links, etc.)               |
-|.                                                        |
-|.                                                        |
-|.                                                        |
-|.                                                        |
+| Banner- Title (help page links)              |
+|----------------------------------------------|
+| <links to related articles, i.e. navigation> |
+| <article-page>                               |
 
 
-- a CSS style rule on the IMG (selector: `.fills_screen_width`) ensures that images are a maximum of 90% of the screen width
+
+- a CSS style rule on the IMG (selector: `.fills_screen_width`) ensures that large images are a maximum of 90% of the screen width
   - thus on a narrow view as seen on a mobile phone, the images are shrunk to fit the screen width 
 
 Thus the content can be presented to users on devices with different screen sizes.
@@ -150,7 +138,7 @@ Thus the content can be presented to users on devices with different screen size
 
 ## Datasets
 
-In the process of researching infromation on the subject,
+In the process of researching information on the subject,
 I have identified various data sources.
 
 - I explored storing them as `.csv` text files, but was unable to find a way to load them into variables in javascript.
@@ -160,26 +148,21 @@ I have identified various data sources.
  
 Data sources have the following structures:
 
-### A list of `[_<hyperlink-text>_, _<hyperlink-url>_]`
+### A list of `[<hyperlink-text>, <hyperlink-url>]`
 
 For example:
 
 - Video sources
-- Research Orgnisations
+- Research Organisations
 
 This is stored in a javascript text file
 
 - for example, file `/scripts/video_sources.js` consists of:
 
-
-
 ```
 video_sources = [
-
   ["National Geographic: How We Can Keep Plastics Out of Our Ocean", "https://www.youtube.com/watch?v=HQTUWK7CM-Y&t=3s"],
-
   ["Why We Need to Stop Plastic Pollution in Our Oceans FOR GOOD", "https://www.youtube.com/watch?v=Yomf5pBN8dY&t=2s"],
-
 ];
 
 ```
