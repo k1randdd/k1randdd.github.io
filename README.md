@@ -67,7 +67,7 @@ Set up a process to:
 - [x] Edit pages, javascript files and style sheets in NotePad, and check that the following commands succssfully update local changes to the remote  git repository:
 ```
 git init
-git add - A .
+git add -A .
 git status
 git commit -m "<change-description>"
 git push -u origin main
@@ -231,7 +231,7 @@ HTML page and Javascript programs can retrieve this table in a variable, for exa
 
  * a list of images to be presented on a web page
  * each record consists of:
-   * `[`<image-file-path>`, <image-description-text>`]`
+   * `[`<image-file-path>`, `<image-description-text>`]`
 
 One example record is:
 ```
@@ -267,10 +267,10 @@ Javascript programs are saved in the sub-folder: ` scripts/ `
 
 The following scripts are saved in that folder:
 
-| Filename | Usage |
-|----------|-----_-|
-| `navigation.js` | A list of naviagation links for each page: see the later sub-section "Navigation" for details. |
-| `fill_node_functions.js` | This javascript file holds fucntions that can be used to convert a dataset into HTML content. |
+| Filename                  | Usage                                                                                                                                               |
+|---------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------|
+| `navigation.js`           | A list of navigation links for each page: see the later sub-section "Navigation" for details.                                                       |
+| `fill_node_functions.js`  | This javascript file holds functions that can be used to convert a dataset into HTML content.                                                       |
 | _dataset-name_`_table.js` | Javascript files to declare a dataset as a variable, which can then be used to generate HTML content via function calls to `fill_node_functions.js` |
 
 Scripts can be updated in this sub-folder: ` scripts/ ` as follows:
@@ -285,9 +285,9 @@ Scripts can be updated in this sub-folder: ` scripts/ ` as follows:
         * if the item is a single string of text, then generate:
           * <div> text </div>
         * if the item is an array of two strings, then build a hyperlink:
-          * [<hyperlink-text>, <hyperlink-url>]
+          * `[`<hyperlink-text>`, `<hyperlink-url>`]`
         * if the item is an array of three strings, then build a hyperlink with a description:
-          * [<hyperlink-text>, <hyperlink-url>, <website-description>]
+          * `[`<hyperlink-text>`, `<hyperlink-url>`, `<website-description>`]`
         * Note that further code can be added, to handle an item containing four or more strings.
     * `function fill_node_image_gallery(node_id, list_name)`
       * This function builds HTML content, for an image gallery.
@@ -297,7 +297,7 @@ Scripts can be updated in this sub-folder: ` scripts/ ` as follows:
 
 Articles are saved as web pages in the sub-folder: ` articles/ `
 
-The inital web-page template is:
+The initial web-page template is:
 
 ```
 <html>
@@ -319,7 +319,7 @@ The inital web-page template is:
 | `<h1>` ... `</h1>` | Main heading. |
 | `<h2>` ... `</h2>` | Sub-heading. |
 | `<div id="..." class="...">` ... `</div>` | Text, styled by selectors in the default stylesheet. |
-| `<img class="..." src="../images/...jpg" alt="...">`` | Images, stored in the default `images/ ` sub-folder. |
+| `<img class="..." src="../images/...jpg" alt="...">` | Images, stored in the default `images/ ` sub-folder. |
 | `<script src="../scripts/....js"></script>` | Run a Javascript file in the default `scripts/ ` sub-folder.  |
 | `<script> ... </script>` | Run javascript that is embedded within this Article web-page - this can call functions loaded by the line above. |
 
@@ -437,7 +437,7 @@ Each page records can also have a reference to audio, for example:
 
 Thus audio can be added by:
 * storing an audio file in the local `sounds/ ` sub-folder
-* adding a name/value pair: `"audio": "<path-to-audio-file>",` to the relevant page-name record in: `scripts/navigation.js`
+* adding a name/value pair: `"audio": "`<path-to-audio-file>`",` to the relevant page-name record in: `scripts/navigation.js`
   * (one or more pages can use the same audio file)
 
 Also, audio can be removed by:
