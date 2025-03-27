@@ -98,57 +98,70 @@ a {
 /* ========= Bullet-list styles: END ============ */
 
 /* ==== Image Gallery styling: START
-   Use media queries to re-arrange the images on different screen sizes:
-   - for screens larger than 700px wide, it will show four images side by side,
-   - for screens smaller than 700px, it will show two images side by side,
-   - for screens smaller than 500px, the images will stack vertically (100%).
+   There are so many screen sizes on devices in the world.
+   - make the page styling fluid, so that it will fit any image - keeping its aspect ratio.
+   - the gallery area stretches in height, to handle any number of images.
+   - it does not matter if the device's orientation is portrait or landscape.
+   - it uses columns and a fixed width (400px), and the heights vary to cope with different image aspect ratios.
 */
 
-div.gallery {
-  border: 1px solid #ccc;
+.image_gallery_thumbnail a {
+  transition: all .3s ease-in-out;
+  text-decoration: none  /* No Underline on the anchor link */
 }
 
-div.gallery:hover {
-  border: 1px solid #777;
-}
-
-div.gallery img {
-  width: 100%;
-  height: auto;
-}
-
-div.image_desc {
-  padding: 15px;
+.image_gallery {
+  background: #f9f9f9;
+  border-radius: 20px;
+  border: 4px;
+  padding: 10px;
   text-align: center;
+  display: flex;
+  flex-flow: wrap;
+  justify-content: space-around;   
 }
 
-* {
-  box-sizing: border-box;
+.image_gallery_thumbnail {
+  margin: 2px;
+  max-width: 95%;
+  display: inline-block; /* for non-flex browsers */
 }
 
-.gallery_responsive {
-  padding: 0 6px;
-  float: left;
-  width: 24.99999%;
-}
-
-@media only screen and (max-width: 700px) {
-  .gallery_responsive {
-    width: 49.99999%;
-    margin: 6px 0;
+@media only screen and (max-width: 800px) {
+  .image_gallery_thumbnail {
+    width: 48%; /* For medium-width screens: present a two-column table of images */
   }
 }
 
 @media only screen and (max-width: 500px) {
-  .gallery_responsive {
-    width: 100%;
+  .image_gallery_thumbnail {
+    width: 100%; /* For narrow screens: present a one-column stack of images */
   }
 }
 
-.gallery_clearfix:after {
-  content: "";
-  display: table;
-  clear: both;
+.image_gallery_thumbnail a {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.image_gallery_thumbnail figcaption {
+  border:1px solid #c0c0c0;
+  background: white; color: black;
+}
+
+.image_gallery_thumbnail img {
+  border-radius: 10px;
+  max-width: 100%;
+  max-height: 400px;
+  vertical-align: bottom;
+  box-shadow: 2px 2px 3px 0 rgba(0, 0, 0, 0.4);
+}
+
+.image_gallery_thumbnail a:hover img {
+  transition: all .3s ease-in-out;
+  box-shadow: 0 0 6px 4px rgba(100, 250, 0, 0.4);
+  z-index: 20;
 }
 
 /* ==== Image Gallery styling: END ==== */

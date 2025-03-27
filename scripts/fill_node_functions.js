@@ -21,11 +21,10 @@ function fill_node_image_gallery(node_id, list_name)
 { var node = document.getElementById(node_id)
   html = ""
   for (let i = 0; i < list_name.length; i++) {
-    html += "<div class=\"gallery_responsive\"><div class=\"gallery\">";
-    html += "<img src=\"" + list_name[i][0] + "\" alt=\"" + list_name[i][3] + "\" width=\"" + list_name[i][1] + "\" height=\"" + list_name[i][2]+ "\">";
-    html += "<div class=\"image_desc\">" + list_name[i][3] + "</div></div></div>";
+    html += "<figure class=\"image_gallery_thumbnail\"><a target=\"_blank\" href=\"" + list_name[i][0] + "\">";
+    html += "<img src=\"" + list_name[i][0] + "\" alt=\"" + list_name[i][1] + "\">";
+    html += "<figcaption>" + list_name[i][1] + "</figcaption>";
+    html += "</a></figure>";
   }
-  html += "<div class=\"gallery_clearfix\"></div>"
   node.innerHTML = html
 }
-
