@@ -9,4 +9,9 @@ key_facts = [
   ["Research states that, by 2050, plastic will likely outweigh all fish in the sea."],
   ["In the last ten years, we have produced more plastic products than in the previous century."],
   ["We use an estimated 4.25 billion pieces of disposable cutlery every year."],
+  ["More than <b>1 million marine animals</b> (including mammals, fish, sharks, turtles, and birds) die every year due to plastic pollution."],
+  ["Over <b>90% of seabirds</b> have plastic in their stomachs—a figure expected to reach 99% by 2050."],
+  ["Microplastics have been found in <b>human blood, lungs, and even placenta</b>, raising concerns about long-term health impacts."],
+  ["The Great Pacific Garbage Patch is now <b>twice the size of Texas</b> and continues to grow."],
+  ["Only <b>9% of all plastic waste</b> ever produced has been recycled; the rest is either burned, buried, or ends up in nature."],
  ];
