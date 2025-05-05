@@ -1,5 +1,4 @@
-// *** Information Sources table. ***
-// Array of: [<hyperlink-text>, <hyperlink-url>, <website-description>]
+
 
 information_sources = [
   ["Plastic Pollution & Marine Litter | UNEP - UN Environment Programme", "https://www.unep.org/topics/ocean-seas-and-coasts/ecosystem-degradation-pollution/plastic-pollution-marine-litter", "Plastic Pollution & Marine Litter, United Nations Environment Programme"],
