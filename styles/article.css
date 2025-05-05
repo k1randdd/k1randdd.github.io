@@ -32,7 +32,7 @@ a {
  font-size: 24px;
 }
 
-/* For large images, resize them to fill the whole width of the screen */
+
 
 .fills_screen_width {
   width:100%;
@@ -43,8 +43,7 @@ a {
   margin-right:auto;
 }
 
-/* ========= Bullet-list styles: START
-     - can update or add more list styles below ============ */
+
 
 .two_views div::before {
   content: "\1F935";
@@ -95,19 +94,11 @@ a {
   font-size: 32px;
 }
 
-/* ========= Bullet-list styles: END ============ */
 
-/* ==== Image Gallery styling: START
-   There are so many screen sizes on devices in the world.
-   - make the page styling fluid, so that it will fit any image - keeping its aspect ratio.
-   - the gallery area stretches in height, to handle any number of images.
-   - it does not matter if the device's orientation is portrait or landscape.
-   - it uses columns and a fixed width (400px), and the heights vary to cope with different image aspect ratios.
-*/
 
 .image_gallery_thumbnail a {
   transition: all .3s ease-in-out;
-  text-decoration: none  /* No Underline on the anchor link */
+  text-decoration: none  
 }
 
 .image_gallery {
@@ -124,18 +115,18 @@ a {
 .image_gallery_thumbnail {
   margin: 2px;
   max-width: 95%;
-  display: inline-block; /* for non-flex browsers */
+  display: inline-block; 
 }
 
 @media only screen and (max-width: 800px) {
   .image_gallery_thumbnail {
-    width: 48%; /* For medium-width screens: present a two-column table of images */
+    width: 48%; 
   }
 }
 
 @media only screen and (max-width: 500px) {
   .image_gallery_thumbnail {
-    width: 100%; /* For narrow screens: present a one-column stack of images */
+    width: 100%; 
   }
 }
 
@@ -164,4 +155,4 @@ a {
   z-index: 20;
 }
 
-/* ==== Image Gallery styling: END ==== */
+
