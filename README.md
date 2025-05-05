@@ -1,7 +1,13 @@
-A website showcasing debates and data about the impact of plastics to marine life and our oceans 
+Candidate Numbers:
+2504738
 
-Rafa:
-should summarise the project, define everyone’s role, reference key sources of inspirations, introduce your dataset (source, authors, publication date, and context), 
+Project summary: Our project is a website which showcases the everlasting effects of plastic in the oceans and the effect it has on marine life. Our aim was to deliver a journalistic story which informs visitors of the environmental crisis while also showcasing the diverse and sometimes conflicting perspectives surrounding the topic by involving two different views. Ultimately, the problem at hand is at an incline which is why we concluded with solutions on the matter. 
+
+Roles: As we were assigned as one of the smaller groups, distributing a fair workload to each group member was very straight forward. Rafael’s role was to set up the layout of the 5 pages while Kiran’s role was to set up the navigation menu and title banner. Kiran then had responsibility for the “Home Page” page, “The Key Facts” page, and the “More Information” page. Rafael had the responsibility of adding themed sound effects when clicking the first three pages and completing the “The Oceans” page and the “What Can We Do?” page.
+
+Key sources of inspiration:
+
+Our dataset:
 
 Website Design: 
 In terms of the visual style of the website, we wanted it to be minimal, simple and easy to read. The blue palette was used to represent the ocean against a white background. The content was divided across five web pages to make it more manageable and easier to absorb in smaller, organised sections.
