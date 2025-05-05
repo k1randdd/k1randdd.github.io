@@ -1,5 +1,4 @@
-// *** Key Facts table. ***
-// List of: [<fact-description-text>]  (the text can include some basic HTML formatting: <b></b>, <i></i>, <u></u>) 
+
 
 key_facts = [
   ["Plastic generally takes between <b>500-1000 years to degrade</b>. Even then, it becomes microplastics, without fully degrading."],
