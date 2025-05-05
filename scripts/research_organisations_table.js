@@ -1,5 +1,4 @@
-// *** Research Organisations table. ***
-// Array of: [<hyperlink-text>, <hyperlink-url>]
+
 
 research_organisations = [
   ["Oceanic Society | Ocean conservation since 1969", "https://www.oceanicsociety.org/"],
