@@ -6,9 +6,9 @@ Project summary: Our project is a website which showcases the everlasting effect
 
 Roles: As we were assigned as one of the smaller groups, distributing a fair workload to each group member was very straight forward. Rafael’s role was to set up the layout of the 5 pages while Kiran’s role was to set up the navigation menu and title banner. Kiran then had responsibility for the “Home Page” page, “The Key Facts” page, and the “More Information” page. Rafael had the responsibility of adding themed sound effects when clicking the first three pages and completing the “The Oceans” page and the “What Can We Do?” page.
 
-Key sources of inspiration:
+Key sources of inspiration: David Attenborough's strong standpoint on the use of plastic which was aired on BBC. We used this source of information on our home page as it is part of our dataset. Another inspiration is National Geographic and the many documentaries they film surrounding the problem. And lastly, Donald Trump's standpoint on the matter of how "paper straws don't work" where he pushes for the production of plastic which strongly opposes our views on the matter.
 
-Our dataset:
+Our dataset: Our dataset is the debate between the two opposing perspectives on the matter - Donald Trump and David Attenbourough's statements - and the graphs/statistics provided by the BBC about the rapid increase of plastic found in the ocean.
 
 Website Design: 
 In terms of the visual style of the website, we wanted it to be minimal, simple and easy to read. The blue palette was used to represent the ocean against a white background. The content was divided across five web pages to make it more manageable and easier to absorb in smaller, organised sections.
