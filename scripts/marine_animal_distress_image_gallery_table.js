@@ -1,5 +1,4 @@
-// *** Marine Animal Distress - image gallery table. ***
-// Array of: [<image-file-path>, <image-width-in-pixels>, <image-height-in-pixels>, <image-description-text>]
+
 
 marine_animal_distress_image_gallery = [
   ["../images/turtle_straw_bag.jpg", "Turtle with plastic obcstructing its breathing capability"],
