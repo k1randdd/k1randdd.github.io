@@ -1,5 +1,6 @@
 Candidate Numbers:
 2504738
+2405933
 
 Project summary: Our project is a website which showcases the everlasting effects of plastic in the oceans and the effects it has on marine life. Our aim was to deliver a journalistic story which informs visitors of the environmental crisis while also showcasing the diverse and sometimes conflicting perspectives surrounding the topic by involving two different views. Ultimately, the problem at hand is at an incline which is why we concluded with solutions on the matter. 
 
