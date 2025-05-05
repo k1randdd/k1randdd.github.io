@@ -1,5 +1,4 @@
   
-  // *** Array of all main links: [<link-description-text>, <page-name>] ***
   all_main_links = [
         ["Home Page",
          "Two Views"],
@@ -13,9 +12,7 @@
          "Information Sources"],
   ];
 
-  // *** Array of page information: { name, audio, text_page, images_page, links } ***
-  //     - if links is empty i.e. "links": [], then use "all_main_links" list defined above,
-  //       so you can have a specific list of related links, or the full default set.
+ 
   pages = 
   [
     { "name": "The Oceans",
