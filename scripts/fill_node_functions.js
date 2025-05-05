@@ -1,7 +1,4 @@
-// *** Populate a node from a given list. ***
-//  one string: <div> text </div>
-//  two items:   [<hyperlink-text>, <hyperlink-url>]
-//  three items: [<hyperlink-text>, <hyperlink-url>, <website-description>]
+
 
 function fill_node(node_id, list_name)
 { var node = document.getElementById(node_id)
