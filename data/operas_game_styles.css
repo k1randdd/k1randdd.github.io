@@ -39,7 +39,7 @@ h1 {
   flex-flow: wrap;
 }
 
-@media only screen and (max-width: 800px) {
+@media (orientation: portrait) {
   #questions_list div {
     float: center;
     width: 95%;
@@ -98,7 +98,7 @@ option {
   width: 500px;
 }
 
-@media only screen and (max-width: 500px) {
+@media (orientation: portrait) {
   #banner, #score, #timer, #game_controls, #clues_list, #results {
     margin: auto;
     width: 95%;
