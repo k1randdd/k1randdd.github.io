@@ -1,0 +1,145 @@
+#timer_value { color: red; font-weight: bold; }
+
+#clues_list div, #results div {
+  margin: 4px;
+  padding: 0;
+  border: 0;
+  font-family: Times New Roman;
+  font-size: large;
+}
+
+h1 {
+  text-align: left;
+  border:0; padding:0; margin:0;
+  background-color: rgba(0, 193, 255, 0.25);
+  border-radius: 16px;
+}
+
+#clues_list div:first-child {
+  font-size: large;
+  font-style: italic;
+}
+
+#questions_list div h2 {
+  text-align: left;
+  width: 50%;
+  border:0; padding-left:10px; margin:0;
+  background-color: rgba(0, 100, 255, 0.25);
+  border-radius: 10px;
+}
+
+#questions_list div {
+  float: left;
+  width: 44%;
+  padding: 10px;
+  margin-left: 1%; margin-right: 1%; margin-top: 10px; margin-bottom: 10px;
+  background-color: #f9f9f9;
+  border-radius: 20px;
+  border: 4px double rgba(0, 100, 255, 0.25);
+  flex-flow: wrap;
+}
+
+@media only screen and (max-width: 800px) {
+  #questions_list div {
+    float: center;
+    width: 95%;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    background: #f9f9f9;
+    border-radius: 20px;
+    border: 4px;
+    flex-flow: wrap;
+  }
+}
+
+/* Clear floats after the columns */
+#questions_list:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+button { font-size: large; }
+#button_game_start, #button_game_finish { color: blue; }
+
+select {
+  max-width: 90%; 
+  font-size: large;
+}
+
+option {
+  /* wrap text in compatible browsers */
+  -moz-white-space: pre-wrap;
+  -o-white-space: pre-wrap;
+  white-space: pre-wrap;
+  /* hide text that can't wrap with an ellipsis */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  /* add border after every option */
+  border-bottom: 1px solid #DDD;
+}
+
+.clue_title       { background-color: #DDD; }
+.answer_incorrect { font-weight: bold; color: darkred; }
+.answer_correct   { font-weight: bold; color: darkgreen; }
+.answer_correction    { background-color: rgb(200,200,0,0.1); }
+.result_correct       { background-color: rgb(0,200,0,0.1); }
+.right_answer_message { color: darkblue; }
+.result_wrong { color: darkgray; text-decoration: line-through; }
+.result_right { color: darkblue; }
+.row_totals   { font-size: large; }
+.results_max_score { font-size: large; font-weight: bold; color: darkblue; }
+.info_url  { font-size: large; }
+.info_text { font-size: large; }
+.results_footer { font-style: italic; }
+
+#banner, #score, #timer, #game_controls, #clues_list, #results {
+  margin: auto;
+  width: 500px;
+}
+
+@media only screen and (max-width: 500px) {
+  #banner, #score, #timer, #game_controls, #clues_list, #results {
+    margin: auto;
+    width: 95%;
+  }
+}
+
+#results_table {
+  border: 6px double green;
+  border-radius: 20px;
+  padding: 10px;
+  background-color: rgb(250,250,250);
+}
+
+#results_table tr:first-child {
+  font-weight: bold;
+  font-size: large;
+}
+
+#results_table tr:last-child {
+  font-weight: bold;
+  margin-top: 2px;
+  margin-bottom: 2px;
+}
+
+#results_table tr td:first-child {
+  font-size: large;
+}
+
+#results_table tr td:last-child {
+  font-weight: bold;
+  text-align: center;
+}
+
+#results_table tr td {
+  vertical-align: top;
+  padding: 6px;
+  border-top: 1px solid #c0c0c0;
+}
+
+#results_table tr td p {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}

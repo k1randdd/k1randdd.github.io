@@ -1,81 +1,328 @@
-<!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Marine Life Cruelty</title>
-  <link rel="stylesheet" href="styles/main.css">
-</head>
-  <script src="scripts/navigation.js">
-  </script>
-<body>
-  <div id="banner"><h1>Marine Life Cruelty</h1></div>
-  <div id="related_links" class="container"></div>
-  <div id="text_page" class="container"></div>
+<meta charset="UTF-8">
+<title>Guessing Game</title>
 
-  <script>
-    var audio = false;
+<link rel="stylesheet" href="data/operas_game_styles.css">
 
-    function show_page(page_name, prev_page_name)
-    { 
-      page_index = -1
-      for (let p = 0; p < pages.length; p++) {
-        if (pages[p].name == page_name) {
-          page_index = p
-          break
+<script src="data/operas_database_records.js"></script>
+<script src="data/operas_database_parameters.js"></script>
+
+<script>
+
+//*** Global Variables declaration. ***
+const DATABASE_TOTAL_RECORDS = database_records.length;
+var MULTIPLE_CHOICE_MAX_ITEMS = undefined;    //*** This is set as an integer later.
+var CORRECT_ANSWER_RECORD_INDEX = undefined;  //*** This is set as an integer later.
+var game_is_running = false;
+var timer_countdown = null;
+var game_time_remaining_seconds = 0;
+var game_time_spent_seconds = 0;
+
+//*** Function to randomly shuffle an array of strings: Fisher-Yates Sorting Algorithm. ***
+function random_shuffle(array)
+{ 
+  for (let i = array.length - 1; i > 0; i--) { 
+    const j = Math.floor(Math.random() * (i + 1)); 
+    [array[i], array[j]] = [array[j], array[i]]; 
+  } 
+};
+
+function build_list(attribute_name, random_shuffle_list = true, keep_index = -1, max_items = 0)
+{ unique_list = [];
+  all_list = [];
+  keep_attribute = "";
+  if (keep_index >= 0)
+    keep_attribute = database_records[keep_index][attribute_name];
+  for (var record of database_records)
+  { attribute = record[attribute_name];
+    if (!unique_list.includes(attribute)) 
+      { unique_list.push(attribute);
+      }
+    all_list.push(attribute);
+  }
+  if (random_shuffle_list) 
+    random_shuffle(unique_list);
+  unique_indexed = [];
+  for (var item of unique_list)
+    { if (item == keep_attribute)
+         { i = keep_index; }
+      else
+        i = all_list.indexOf(item);
+      unique_indexed.push( [i, item] );
+    }
+  if (max_items > 0)
+    { len = unique_indexed.length;
+      while (len > max_items)
+      { i = Math.floor(Math.random() * len);
+        if (unique_indexed[i][1] != keep_attribute)
+        { unique_indexed.splice(i, 1);
+          len -= 1;
         }
       }
-      if (page_index < 0) {
-        document.getElementById("text_page").innerHTML = " --- Cannot find page: " + page_name
-      }
+    }
+  return unique_indexed;
+}
 
-      text_page_link = pages[page_index].text_page
-      choices = pages[page_index].links
-      if (choices.length==0) { choices = all_main_links }
+function build_select_element(attribute_name, attribute_text, dropdown_items)
+{ var select_element = document.createElement("select")
+  select_element.id = "select_" + attribute_name;
+  let option_element = document.createElement("option");
+  option_element.textContent = attribute_text;
+  option_element.value = "";
+  option_element.selected = true;
+  option_element.disabled = true;
+  select_element.appendChild(option_element);
+  for (var item of dropdown_items)
+  { option_element = document.createElement("option");
+    option_element.textContent = item[1];
+    option_element.value = item[0];
+    select_element.appendChild(option_element);
+  }
+  return select_element;
+}
 
-      //if (choices.length>1)
-      // *** More than one Choice and (Narrow Screen or Too many Choices) ? ***
-      if ((choices.length>1) && ((screen.width < 600) || (choices.length >= 20)))
-      { // *** Present links in a drop-down list. ***
-        choices_html = "<select name=\"choices\" id=\"choices\" onchange=\"show_page(document.getElementById('choices').value,'" + page_name + "')\">"
-        for (let i = 0; i < choices.length; i++)
-          if (choices[i][1]!=page_name) {
-            choices_html += "<option value=\"" + choices[i][1] + "\">" + choices[i][0] + "</option>"
-          }
-          else
-          {
-            choices_html += "<option value=\"" + choices[i][1] + "\" selected disabled>" + choices[i][0] + "</option>"
-          }
-        choices_html += "</select>"
+function game_check_answer()
+{ var maxmimum_possible_score = 0;
+  var total_score = 0;
+  for (var item of questions_order)
+  { var question_points = parseInt(item[3]);
+    maxmimum_possible_score += question_points;
+    var target_div = document.getElementById("score_" + item[0]);
+    var selected_value = document.getElementById("select_" + item[0]).value
+    if (selected_value == "")
+    { target_div.innerHTML = "<span class='answer_incorrect'>&#128546; No Answer</span> - Score: 0"; }
+    else
+      if (selected_value == CORRECT_ANSWER_RECORD_INDEX.toString())
+      { 
+        total_score += question_points;
+        target_div.innerHTML = "<span class='answer_correct'>&#128526; YES</span> - Score: " + question_points.toString();
       }
       else
-      { // *** Present links as a list of buttons. ***
-        choices_html = "<span>"
-        for (let i = 0; i < choices.length; i++)
-          if (choices[i][1]!=page_name) {
-            button_html = "<button onclick='show_page(\"" + choices[i][1] + "\",\"" + page_name + "\")'>" + " " + choices[i][0] + " </button>"
-            choices_html += button_html + " "
-          }
-          else
-          {
-            choices_html += "<a class='no_button'>" + choices[i][0] + "</a> "
-          }
-        choices_html += "</span>"
+      { target_div.innerHTML = "<span class='answer_incorrect'>&#128546; NO</span> - Score: 0";
+        //*** Disable this option from the selection: already tried and found to be an incorrect answer. ***
+        var target_options = document.getElementById("select_" + item[0]).options;
+        for (var option of target_options)
+          if (option.value == selected_value)
+            { option.disabled = true; break; }
       }
-
-      if (audio!=false) { audio.pause(); audio=false; }
-      if (pages[page_index].audio) {
-        audio = new Audio(pages[page_index].audio);
-        audio.play();
-      }
-
-      document.getElementById("text_page").innerHTML = "<iframe id='text_page_iframe' src='" + text_page_link + "'></iframe>"
-      document.getElementById("related_links").innerHTML = choices_html
   }
+  document.getElementById("score_value").innerHTML = total_score.toString() + " out of " + maxmimum_possible_score.toString();
+
+  // *** Draw the Score progress gauge. ***
+  if (maxmimum_possible_score > 0)
+  { var percentage = Math.floor(total_score / maxmimum_possible_score * 100);
+    if (percentage > 100) percentage = 100;
+    var canvas = document.getElementById("score_canvas");
+    var context = canvas.getContext("2d");
+    context.lineWidth = 2;
+    context.clearRect(0, 0, canvas.width, canvas.height);  //*** Clear the screen.
+    // *** Create linear gradient.
+    var grad = context.createLinearGradient(0, 0, canvas.width, canvas.height);
+    grad.addColorStop(0,  "lightblue");
+    grad.addColorStop(0.5,"yellow");
+    grad.addColorStop(1,  "green");
+    context.fillStyle = grad;
+    context.fillRect(0, 0, canvas.width, canvas.height);
+    context.fillStyle = "black";
+    var x_pos = Math.floor(canvas.width * percentage / 100);
+    context.fillRect(x_pos, 0, canvas.width - x_pos, canvas.height);
+    context.fillStyle = "blue";
+    context.rect(0, 0, canvas.width, canvas.height);
+    context.fillStyle = "white";
+    context.font = "10px Arial";
+    context.fillText(percentage + "%", 0, canvas.height);
+  }
+
+  if (total_score >= maxmimum_possible_score)
+    game_finish();
+}
+
+function initialise_game_state()
+{
+  document.getElementById("game_title").innerHTML = GAME_TITLE;
+  document.getElementById("difficulty_select").disabled = game_is_running;
+  document.getElementById("button_game_start").disabled = game_is_running;
+  document.getElementById("button_game_finish").disabled = game_is_running ? false : true;
+  document.getElementById("game_more_time").hidden = game_is_running ? false : true;
+  document.getElementById("results").hidden = game_is_running;
+}
+
+function game_start()
+{ game_is_running = true;
+  initialise_game_state();
   
-    show_page("Two Views", "")   // *** You can choose any page to be the Start Page here. ***
-  </script>
- 
+  //*** Choose an item at random: an record index [0..n-1] from the database of n records. ***
+  CORRECT_ANSWER_RECORD_INDEX = Math.floor(Math.random() * DATABASE_TOTAL_RECORDS);
+
+  //*** The difficulty-level determines the number of multiple-choice answers presented to the player. ***
+  MULTIPLE_CHOICE_MAX_ITEMS = parseInt(document.getElementById("difficulty_select").value) * 2;
+
+  document.getElementById("score_value").innerHTML = "-";
+  var canvas = document.getElementById("score_canvas");
+  var context = canvas.getContext("2d");
+  context.clearRect(0, 0, canvas.width, canvas.height);
+
+  document.getElementById("timer_value").innerHTML = "-";
+
+  //*** Empty the Results area. ***
+  document.getElementById("results").innerHTML = null;
+
+  //*** Fill the Clues area. ***
+  var target_element = document.getElementById("clues_list");
+  target_element.innerHTML = null;
+  var div_element = document.createElement("div");
+  div_element.innerHTML = GAME_CLUE_INTRO;
+  target_element.appendChild(div_element);
+  for (var item of clues_order)
+  { clue_text = database_records[CORRECT_ANSWER_RECORD_INDEX][item[0]];
+    if (clue_text)
+    { var div_element = document.createElement("div");
+      div_element.innerHTML = "<span class='clue_title'>" + item[1] + "</span>: " + clue_text;
+      target_element.appendChild(div_element);
+    }
+  }
+
+  //*** Fill the Questions area. ***
+  document.getElementById("questions_list").innerHTML = null;
+  for (var item of questions_order)
+  { var dropdown_items = build_list(item[0], true, CORRECT_ANSWER_RECORD_INDEX, MULTIPLE_CHOICE_MAX_ITEMS);
+    var header_element = document.createElement("h2");
+    header_element.innerHTML = item[2];
+    var score_element = document.createElement("p");
+    score_element.id = "score_" + item[0];
+    score_element.innerHTML = "<span class='answer_incorrect'>&#128546; No Answer</span> - Score: 0";
+    var correction_element = document.createElement("p");
+    correction_element.id = "correction_" + item[0];
+    correction_element.innerHTML = "";
+    var select_element = build_select_element(item[0], item[1], dropdown_items);
+    var div_element = document.createElement("div");
+    div_element.appendChild(header_element);
+    div_element.appendChild(select_element);
+    div_element.appendChild(score_element);
+    div_element.appendChild(correction_element);
+    var added_element = document.getElementById("questions_list").appendChild(div_element);
+    document.getElementById(select_element.id).addEventListener("change", game_check_answer);
+  }
+
+  //*** Start the Timer countdown. ***
+  //*** (parameter N seconds per Clue x No. of Clues)
+  //  + (parameter N seconds per Question x No. of Questions) times the difficulty-level
+  // : determines the number of seconds in the countdown timer. ***
+  game_time_spent_seconds = 0;
+  game_time_remaining_seconds = (clues_order.length * GAME_SECONDS_PER_CLUE) + questions_order.length * GAME_SECONDS_PER_QUESTION * (6 - parseInt(document.getElementById("difficulty_select").value) );
+  timer_countdown = setInterval(function() 
+  { var target_div = document.getElementById("timer_value");
+    game_time_spent_seconds += 1;
+    game_time_remaining_seconds -= 1;
+    if (game_time_remaining_seconds <= 0)
+    { clearInterval(timer_countdown);
+      target_div.innerHTML = "Out of Time.";
+      game_finish();
+    }
+    else
+    { var hours = Math.floor((game_time_remaining_seconds % (60 * 60 * 24)) / (60 * 60));
+      var minutes = Math.floor((game_time_remaining_seconds % (60 * 60)) / (60));
+      var seconds = Math.floor((game_time_remaining_seconds % (60)) / 1);
+      target_div.innerHTML = hours.toString() + "h " + minutes.toString() + "m " + seconds.toString() + "s ";
+    }
+  }, 1000);
+}
+
+function game_more_time()
+{ var t = game_time_remaining_seconds;
+  t += 5 * 60;          //*** An extra 5 minutes of time; max 10 hours.
+  if (t > 36000) t = 36000;
+  game_time_remaining_seconds = t;
+}
+
+function game_finish()
+{ game_is_running = false;
+  if (timer_countdown) clearInterval(timer_countdown);
+
+  //*** Fill the Results area. ***
+  var hours = Math.floor((game_time_spent_seconds % (60 * 60 * 24)) / (60 * 60));
+  var minutes = Math.floor((game_time_spent_seconds % (60 * 60)) / (60));
+  var seconds = Math.floor((game_time_spent_seconds % (60)) / 1);
+  var results = "<h2>Results</h2>";
+  results += "<p id='game_play_seconds'>After playing for: " + hours.toString() + "h " + minutes.toString() + "m " + seconds.toString() + "s.</p>";
+  results += "<table id='results_table'><tr><td>Question</td><td>Answer</td><td>Score</td></tr>";
+  var maxmimum_possible_score = 0;
+  var total_score = 0;
+  for (var item of questions_order)
+  { var question_points = parseInt(item[3]);
+    maxmimum_possible_score += question_points;
+    var target_div = document.getElementById("correction_" + item[0]);
+    var selected_value = document.getElementById("select_" + item[0]).value
+    var correct_answer = database_records[CORRECT_ANSWER_RECORD_INDEX][item[0]];
+    document.getElementById("select_" + item[0]).disabled = true;
+    if (selected_value == CORRECT_ANSWER_RECORD_INDEX.toString())
+    { 
+      total_score += question_points;
+      results += "<tr><td>" + item[2] + "</td><td><p class='result_correct'>" + correct_answer + "</p>" + "</td><td>" + question_points.toString() + "</td></tr>";
+    }
+    else
+    { target_div.innerHTML = "<span class='right_answer_message'>Right Answer: </span><span class='answer_correction'>" + correct_answer + "</span>";
+      var wrong_answer = "(Not Answered)";
+      if (selected_value != "") wrong_answer = database_records[parseInt(selected_value)][item[0]];
+      results += "<tr><td>" + item[2] + "</td><td><p class='result_wrong'>" + wrong_answer + "</p><p class='result_right'>" + correct_answer + "</p></td><td>-</td></tr>";
+    }
+  }
+  results += "<tr class='row_totals'><td colspan='2' align='center'>TOTAL SCORE</td><td>" + total_score.toString() + " out of " + maxmimum_possible_score.toString() + "</td></tr>";
+  results += "</table>";
+
+  if (total_score >= maxmimum_possible_score)
+    results += "<p class='results_max_score'>Maximum Score - Well Done!</p>";
+
+  results += "<h2>Additional Information</h2>";
+  for (var item of additional_information)
+  { info_text = database_records[CORRECT_ANSWER_RECORD_INDEX][item[0]];
+    if (info_text)
+      if (item[0].indexOf("url_") == 0)
+      { results += "<div class='info_url'><a target='_blank' href='" + info_text + "'>" + item[1] + "</a></div>";
+      }
+      else
+        results += "<div class='info_text'>" + info_text + "</div>";
+  }
+
+  results += "<div class='results_footer'>Scroll back up to the top, and click the button [New Game], to play again.</div>";
+
+  document.getElementById("results").innerHTML = results;
+
+  initialise_game_state();
+}
+
+</script>
+</head>
+<body onload="initialise_game_state()">
+
+<div id="banner"><h1 id="game_title">Guessing Game</h1></div>
+
+<div id="score">Total Score: <span id="score_value">0</span>&nbsp;&nbsp;<canvas id="score_canvas" width="200" height="10"></canvas></div>
+
+<div id="timer">Time Left: <span id="timer_value">-</span>
+<span id="game_more_time"><button id="button_more_time" onclick="game_more_time()">Give me more time!</button></span>
+</div>
+
+<div id="game_controls">
+<span id="difficulty_level">Level of Difficulty:
+<select id="difficulty_select">
+<option value="1">Very Easy</option>
+<option value="2">Easy</option>
+<option value="3" selected="true">Medium</option>
+<option value="4">Hard</option>
+<option value="5">Very Hard</option>
+</select>
+</span>
+<span id="game_start"><button id="button_game_start" onclick="game_start()">New Game</button></span>
+<span id="game_finish"><button id="button_game_finish" onclick="game_finish()">Finish Game</button></span>
+</div>
+
+<div id="clues_list"></div>
+
+<div id="results"></div>
+
+<div id="questions_list"></div>
+
 </body>
 </html>
-
