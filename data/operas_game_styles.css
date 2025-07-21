@@ -28,6 +28,7 @@ h1 {
   border-radius: 10px;
 }
 
+/*
 #questions_list div {
   float: left;
   width: 44%;
@@ -37,9 +38,9 @@ h1 {
   border-radius: 20px;
   border: 4px double rgba(0, 100, 255, 0.25);
   flex-flow: wrap;
-}
+}*/
 
-@media (orientation: portrait) {
+//@media (orientation: portrait) {
   #questions_list div {
     float: center;
     width: 95%;
@@ -50,7 +51,7 @@ h1 {
     border: 4px;
     flex-flow: wrap;
   }
-}
+//}
 
 /* Clear floats after the columns */
 #questions_list:after {
@@ -93,17 +94,17 @@ option {
 .info_text { font-size: large; }
 .results_footer { font-style: italic; }
 
-#banner, #score, #timer, #game_controls, #clues_list, #results {
+/*#banner, #score, #timer, #game_controls, #clues_list, #results {
   margin: auto;
   width: 500px;
-}
+}*/
 
-@media (orientation: portrait) {
+//@media (orientation: portrait) {
   #banner, #score, #timer, #game_controls, #clues_list, #results {
     margin: auto;
     width: 95%;
   }
-}
+//}
 
 #results_table {
   border: 6px double green;
