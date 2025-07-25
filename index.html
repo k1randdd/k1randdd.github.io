@@ -2,9 +2,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Guessing Game</title>
+<title>Operas</title>
 
-<link rel="stylesheet" href="data/operas_game_styles.css">
+<link rel="stylesheet" href="styles/main.css">
 
 <script src="data/operas_database_records.js"></script>
 <script src="data/operas_database_parameters.js"></script>
@@ -145,8 +145,20 @@ function initialise_game_state()
   document.getElementById("difficulty_select").disabled = game_is_running;
   document.getElementById("button_game_start").disabled = game_is_running;
   document.getElementById("button_game_finish").disabled = game_is_running ? false : true;
-  document.getElementById("game_more_time").hidden = game_is_running ? false : true;
+  document.getElementById("button_game_more_time").disabled = game_is_running ? false : true;
+  document.getElementById("questions_list").hidden = game_is_running ? false : true;
   document.getElementById("results").hidden = game_is_running;
+  if (game_is_running)
+  { document.getElementById("curtain1").classList.add('open'); 
+    document.getElementById("results").classList.remove('show');
+  }
+  else
+  { document.getElementById("curtain1").classList.remove('open');
+    if (document.getElementById("results").innerHTML != "")
+    { document.getElementById("results").classList.add('show');
+    } 
+  }
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 function game_start()
@@ -264,7 +276,7 @@ function game_finish()
     }
     else
     { target_div.innerHTML = "<span class='right_answer_message'>Right Answer: </span><span class='answer_correction'>" + correct_answer + "</span>";
-      var wrong_answer = "(Not Answered)";
+      var wrong_answer = "-";
       if (selected_value != "") wrong_answer = database_records[parseInt(selected_value)][item[0]];
       results += "<tr><td>" + item[2] + "</td><td><p class='result_wrong'>" + wrong_answer + "</p><p class='result_right'>" + correct_answer + "</p></td><td>-</td></tr>";
     }
@@ -302,7 +314,7 @@ function game_finish()
 <div id="score">Total Score: <span id="score_value">0</span>&nbsp;&nbsp;<canvas id="score_canvas" width="200" height="10"></canvas></div>
 
 <div id="timer">Time Left: <span id="timer_value">-</span>
-<span id="game_more_time"><button id="button_more_time" onclick="game_more_time()">Give me more time!</button></span>
+<span id="game_more_time"><button id="button_game_more_time" onclick="game_more_time()">Give me more time!</button></span>
 </div>
 
 <div id="game_controls">
@@ -318,6 +330,8 @@ function game_finish()
 <span id="game_start"><button id="button_game_start" onclick="game_start()">New Game</button></span>
 <span id="game_finish"><button id="button_game_finish" onclick="game_finish()">Finish Game</button></span>
 </div>
+
+<div id="curtain1" class="curtain"></div>
 
 <div id="clues_list"></div>
 

@@ -11,7 +11,7 @@
 }
 
 h1 {
-  text-align: left;
+  text-align: center;
   border:0; padding:0; margin:0;
   background-color: rgba(0, 193, 255, 0.25);
   border-radius: 16px;
@@ -24,10 +24,15 @@ h1 {
 
 #questions_list div h2 {
   text-align: left;
-  width: 50%;
+  // width: 50%;
   border:0; padding-left:10px; margin:0;
-  background-color: rgba(0, 100, 255, 0.25);
-  border-radius: 10px;
+  // background-color: rgba(0, 100, 255, 0.25);
+  // border-radius: 10px;
+}
+
+#questions_list div h2::first-letter {
+  font-weight: normal;
+  font-size: xx-large;
 }
 
   #questions_list div {
@@ -108,6 +113,14 @@ option {
 .info_text { font-size: large; }
 .results_footer { font-style: italic; }
 
+.info_url::before {
+  content: "\1F310";
+  display: inline-block; vertical-align: bottom;
+  margin: 3px;
+  font-size: large;
+}
+
+
   #banner, #score, #timer, #game_controls, #clues_list, #results {
     margin: auto;
     width: 95%;
@@ -157,4 +170,67 @@ option {
   margin: 0;
   padding: 0;
   border: 0;
+}
+
+#results { 
+  background-image: url(../images/wood_douglas_fir.jpg);
+  background-repeat: repeat;
+  border-radius: 20px;
+  padding: 8px;
+}
+
+// *** Open and Close Curtains. ***
+
+.curtain {
+  position: relative;
+}
+
+.curtain::after,
+.curtain::before {
+  content: '';
+  background-image: url("../images/curtains_red.png");
+  background-repeat: repeat;
+  position: absolute;
+  transition-duration: 6s;
+}
+
+#curtain1::after,
+#curtain1::before {
+  position: top;
+  height: 500%;
+  width: 50%;
+}
+
+.curtain::before {
+  left: 0;
+  transform-origin: left;
+}
+
+.curtain::after {
+  right: 0;
+  transform-origin: right;
+}
+
+#curtain1.open::after,
+#curtain1.open::before {
+  transform: scaleX(0);
+}
+
+/* After closing the curtains - Fade In: show the Results page. */
+
+.show {
+    -webkit-animation: 10s ease 0s normal forwards 1 fadein;
+    animation: 10s ease 0s normal forwards 1 fadein;
+}
+
+@keyframes fadein {
+    0% { opacity:0; }
+    25% { opacity:0; }
+    100% { opacity:1; }
+}
+
+@-webkit-keyframes fadein {
+    0% { opacity:0; }
+    25% { opacity:0; }
+    100% { opacity:1; }
 }
