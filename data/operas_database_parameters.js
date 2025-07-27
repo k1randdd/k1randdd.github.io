@@ -1,11 +1,11 @@
-//*** Ordered List of: [database-attribute-name, question-text, question-heading, question-points-score]
+//*** Ordered List of: [database-attribute-name, question-text, question-heading, question-score, question-icon]
 const questions_order = [
-  ["sung_in_language", "What Language is this opera sung in ?", "&#x1F3A4; Language", "5"],
-  ["setting_period_and_or_location", "Opera setting: period or location", "&#x1F3DE; Setting", "10"],
-  ["famous_aria_or_song_title", "Name a famous Aria or song in the opera.", "&#x1F3B9; Song", "15"],
-  ["main_characters", "Main characters in the opera:", "&#x1F5E3; Characters", "20"],
-  ["composer_full_name", "Who composed this opera ?", "&#x1F3BC; Composer", "25"],
-  ["title", "Title of the opera ?", "&#x1F4C3; Title", "25"],
+  ["sung_in_language", "What Language is this opera sung in ?", "Language", "5", "&#x1F3A4;"],
+  ["setting_period_and_or_location", "Opera setting: period or location", "Setting", "10", "&#x1F3DE;"],
+  ["famous_aria_or_song_title", "Name a famous Aria or song in the opera.", "Song", "15", "&#x1F3B9;"],
+  ["main_characters", "Main characters in the opera:", "Characters", "20", "&#x1F5E3;"],
+  ["composer_full_name", "Who composed this opera ?", "Composer", "25", "&#x1F3BC;"],
+  ["title", "Title of the opera ?", "Title", "25", "&#x1F4C3;"],
 ];
 
 //*** Ordered List of: [database-attribute-name, clue-text, clue-icon]

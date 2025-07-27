@@ -15,10 +15,23 @@
 const DATABASE_TOTAL_RECORDS = database_records.length;
 var MULTIPLE_CHOICE_MAX_ITEMS = undefined;    //*** This is set as an integer later.
 var CORRECT_ANSWER_RECORD_INDEX = undefined;  //*** This is set as an integer later.
+var CURRENT_GAME_SCORE = undefined;           //*** This is set as an integer later.
+var wrong_answer_count = undefined;           //*** This is set as an integer later.
+
+var timer_remove_speech_bubble = null;
 var game_is_running = false;
 var timer_countdown = null;
+
 var game_time_remaining_seconds = 0;
 var game_time_spent_seconds = 0;
+
+var audio = false;
+
+function play_audio(audio_file)
+{ if (audio!=false) { audio.pause(); audio=false; }
+  audio = new Audio(audio_file);
+  audio.play();
+}
 
 //*** Function to randomly shuffle an array of strings: Fisher-Yates Sorting Algorithm. ***
 function random_shuffle(array)
@@ -83,6 +96,17 @@ function build_select_element(attribute_name, attribute_text, dropdown_items)
   return select_element;
 }
 
+function show_speech_bubble(text, extra_classes=[], seconds=6)
+{ var target_div = document.getElementById("speech_bubble");
+  while (target_div.classList.length > 0)
+    target_div.classList.remove(target_div.classList.item(0));
+  target_div.innerHTML = text;
+  target_div.classList.add("show_speech_bubble");
+  for (var item of extra_classes) 
+     target_div.classList.add(item);
+  timer_remove_speech_bubble = seconds;
+}
+
 function game_check_answer()
 { var maxmimum_possible_score = 0;
   var total_score = 0;
@@ -134,6 +158,22 @@ function game_check_answer()
     context.font = "10px Arial";
     context.fillText(percentage + "%", 0, canvas.height);
   }
+  if (total_score > CURRENT_GAME_SCORE)
+  { if (wrong_answer_count == 0)
+    { show_speech_bubble("<b>Wow!</b><br>Right first time!",["bg_green"]);
+      play_audio("sounds/whoa.mp3");
+    }
+    else
+    { show_speech_bubble("<b>Well Done!</b><br>That is the correct answer.",["bg_green"]);
+      play_audio("sounds/reward.mp3");
+    }
+  }
+  else
+  { show_speech_bubble("Not quite right.<br><i>Try again.</i>",["bg_red"]);
+    play_audio("sounds/clink.mp3");
+    wrong_answer_count += 1;
+  }
+  CURRENT_GAME_SCORE = total_score;
 
   if (total_score >= maxmimum_possible_score)
     game_finish();
@@ -149,14 +189,21 @@ function initialise_game_state()
   document.getElementById("questions_list").hidden = game_is_running ? false : true;
   document.getElementById("results").hidden = game_is_running;
   if (game_is_running)
-  { document.getElementById("curtain1").classList.add('open'); 
-    document.getElementById("results").classList.remove('show');
+  { document.getElementById("curtain1").classList.add('open');
+    document.getElementById("results").classList.remove('show_result');
+    document.getElementById("sprite1_img").src="images/opera_conductor.png";
+    document.getElementById("sprite1_div").classList.add('show_sprite1');
+    show_speech_bubble("Hello there, and Welcome!",["bg_blue"]);
+    play_audio('sounds/orchestra_tuning.mp3');
   }
   else
   { document.getElementById("curtain1").classList.remove('open');
     if (document.getElementById("results").innerHTML != "")
-    { document.getElementById("results").classList.add('show');
-    } 
+      document.getElementById("results").classList.add('show_result');
+    document.getElementById("sprite1_div").classList.remove('show_sprite1');
+    var target_div = document.getElementById("speech_bubble");
+    while (target_div.classList.length > 0)
+      target_div.classList.remove(target_div.classList.item(0));
   }
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
@@ -170,6 +217,10 @@ function game_start()
 
   //*** The difficulty-level determines the number of multiple-choice answers presented to the player. ***
   MULTIPLE_CHOICE_MAX_ITEMS = parseInt(document.getElementById("difficulty_select").value) * 2;
+
+  //*** Reset the Game Score. ***
+  CURRENT_GAME_SCORE = 0;
+  wrong_answer_count = 0
 
   document.getElementById("score_value").innerHTML = "-";
   var canvas = document.getElementById("score_canvas");
@@ -201,7 +252,7 @@ function game_start()
   for (var item of questions_order)
   { var dropdown_items = build_list(item[0], true, CORRECT_ANSWER_RECORD_INDEX, MULTIPLE_CHOICE_MAX_ITEMS);
     var header_element = document.createElement("h2");
-    header_element.innerHTML = item[2];
+    header_element.innerHTML = item[4] + " " + item[2];
     var score_element = document.createElement("p");
     score_element.id = "score_" + item[0];
     score_element.innerHTML = "<span class='answer_incorrect'>&#128546; No Answer</span> - Score: 0";
@@ -225,9 +276,21 @@ function game_start()
   game_time_spent_seconds = 0;
   game_time_remaining_seconds = (clues_order.length * GAME_SECONDS_PER_CLUE) + questions_order.length * GAME_SECONDS_PER_QUESTION * (6 - parseInt(document.getElementById("difficulty_select").value) );
   timer_countdown = setInterval(function() 
-  { var target_div = document.getElementById("timer_value");
+  { if (timer_remove_speech_bubble > 0)
+    { timer_remove_speech_bubble -= 1;
+      if (timer_remove_speech_bubble == 0)
+      { var target_div = document.getElementById("speech_bubble");
+        while (target_div.classList.length > 0)
+          target_div.classList.remove(target_div.classList.item(0));
+      }
+    }
+    var target_div = document.getElementById("timer_value");
     game_time_spent_seconds += 1;
     game_time_remaining_seconds -= 1;
+    if (game_time_remaining_seconds == 30)
+    { show_speech_bubble("You are running out of time.<br><i>Hurry Up!</i>",["bg_red"]);
+      play_audio("sounds/clock_tick_10s.mp3");
+    }
     if (game_time_remaining_seconds <= 0)
     { clearInterval(timer_countdown);
       target_div.innerHTML = "Out of Time.";
@@ -287,6 +350,15 @@ function game_finish()
   if (total_score >= maxmimum_possible_score)
     results += "<p class='results_max_score'>Maximum Score - Well Done!</p>";
 
+  if ((wrong_answer_count == 0) && (total_score >= maxmimum_possible_score))
+  { results += "<p class='results_guesses'>Right first time on all questions - Amazing!</p>";
+    play_audio("sounds/applause_cheering.mp3");
+  }
+  else
+  { results += "<p class='results_guesses'>Incorrect attempts: " + wrong_answer_count.toString() + "</p>";
+    play_audio("sounds/applause_polite.mp3");
+  }
+
   results += "<h2>Additional Information</h2>";
   for (var item of additional_information)
   { info_text = database_records[CORRECT_ANSWER_RECORD_INDEX][item[0]];
@@ -308,6 +380,10 @@ function game_finish()
 </script>
 </head>
 <body onload="initialise_game_state()">
+
+<div id="sprite1_div"><img id="sprite1_img" src=""></div>
+
+<div id="speech_bubble"></div>
 
 <div id="banner"><h1 id="game_title">Guessing Game</h1></div>
 
