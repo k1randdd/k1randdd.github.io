@@ -34,7 +34,7 @@ function play_audio(audio_id, stop_other_sounds=false)
         item.currentTime = 0;
       }
   }
-  if (document.getElementById("sound_checkbox").checked)
+  if (true) //(document.getElementById("sound_checkbox").checked)
   { var a = document.getElementById(audio_id);
     if (a.currentTime > 0)
       a.pause();
