@@ -2,7 +2,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Operas</title>
+<title>Game</title>
 
 <link rel="stylesheet" href="styles/main.css">
 
@@ -25,12 +25,22 @@ var timer_countdown = null;
 var game_time_remaining_seconds = 0;
 var game_time_spent_seconds = 0;
 
-var audio = false;
-
-function play_audio(audio_file)
-{ if (audio!=false) { audio.pause(); audio=false; }
-  audio = new Audio(audio_file);
-  audio.play();
+function play_audio(audio_id, stop_other_sounds=false)
+{ if (stop_other_sounds)
+  { var sounds = document.getElementsByClassName("game_audio");
+    for (var item of sounds)
+      if (item.currentTime > 0)
+      { item.pause();
+        item.currentTime = 0;
+      }
+  }
+  if (document.getElementById("sound_checkbox").checked)
+  { var a = document.getElementById(audio_id);
+    if (a.currentTime > 0)
+      a.pause();
+    a.currentTime = 0;
+    a.play();
+  }
 }
 
 //*** Function to randomly shuffle an array of strings: Fisher-Yates Sorting Algorithm. ***
@@ -161,16 +171,16 @@ function game_check_answer()
   if (total_score > CURRENT_GAME_SCORE)
   { if (wrong_answer_count == 0)
     { show_speech_bubble("<b>Wow!</b><br>Right first time!",["bg_green"]);
-      play_audio("sounds/whoa.mp3");
+      play_audio("audio_whoa");
     }
     else
     { show_speech_bubble("<b>Well Done!</b><br>That is the correct answer.",["bg_green"]);
-      play_audio("sounds/reward.mp3");
+      play_audio("audio_reward");
     }
   }
   else
   { show_speech_bubble("Not quite right.<br><i>Try again.</i>",["bg_red"]);
-    play_audio("sounds/clink.mp3");
+    play_audio("audio_clink");
     wrong_answer_count += 1;
   }
   CURRENT_GAME_SCORE = total_score;
@@ -181,6 +191,7 @@ function game_check_answer()
 
 function initialise_game_state()
 {
+  document.title = GAME_TITLE;
   document.getElementById("game_title").innerHTML = GAME_TITLE;
   document.getElementById("difficulty_select").disabled = game_is_running;
   document.getElementById("button_game_start").disabled = game_is_running;
@@ -191,10 +202,10 @@ function initialise_game_state()
   if (game_is_running)
   { document.getElementById("curtain1").classList.add('open');
     document.getElementById("results").classList.remove('show_result');
-    document.getElementById("sprite1_img").src="images/opera_conductor.png";
+    document.getElementById("sprite1_img").src = GAME_ICON_IMAGE;
     document.getElementById("sprite1_div").classList.add('show_sprite1');
     show_speech_bubble("Hello there, and Welcome!",["bg_blue"]);
-    play_audio('sounds/orchestra_tuning.mp3');
+    play_audio("audio_orchestra_tuning", true);
   }
   else
   { document.getElementById("curtain1").classList.remove('open');
@@ -289,7 +300,7 @@ function game_start()
     game_time_remaining_seconds -= 1;
     if (game_time_remaining_seconds == 30)
     { show_speech_bubble("You are running out of time.<br><i>Hurry Up!</i>",["bg_red"]);
-      play_audio("sounds/clock_tick_10s.mp3");
+      play_audio("audio_clock_tick_10s");
     }
     if (game_time_remaining_seconds <= 0)
     { clearInterval(timer_countdown);
@@ -352,11 +363,11 @@ function game_finish()
 
   if ((wrong_answer_count == 0) && (total_score >= maxmimum_possible_score))
   { results += "<p class='results_guesses'>Right first time on all questions - Amazing!</p>";
-    play_audio("sounds/applause_cheering.mp3");
+    play_audio("audio_applause_cheering");
   }
   else
   { results += "<p class='results_guesses'>Incorrect attempts: " + wrong_answer_count.toString() + "</p>";
-    play_audio("sounds/applause_polite.mp3");
+    play_audio("audio_applause_polite");
   }
 
   results += "<h2>Additional Information</h2>";
@@ -381,6 +392,31 @@ function game_finish()
 </head>
 <body onload="initialise_game_state()">
 
+<audio class="game_audio" id="audio_applause_cheering" preload="auto">
+<source src="sounds/applause_cheering.mp3" type="audio/mpeg">
+</audio>
+<audio class="game_audio" id="audio_applause_polite" preload="auto">
+<source src="sounds/applause_polite.mp3" type="audio/mpeg">
+</audio>
+<audio class="game_audio" id="audio_clink" preload="auto">
+<source src="sounds/clink.mp3" type="audio/mpeg">
+</audio>
+<audio class="game_audio" id="audio_clock_tick_10s" preload="auto">
+<source src="sounds/clock_tick_10s.mp3" type="audio/mpeg">
+</audio>
+<audio class="game_audio" id="audio_orchestra_tuning" preload="auto">
+<source src="sounds/orchestra_tuning.mp3" type="audio/mpeg">
+</audio>
+<audio class="game_audio" id="audio_reward" preload="auto">
+<source src="sounds/reward.mp3" type="audio/mpeg">
+</audio>
+<audio class="game_audio" id="audio_tap" preload="auto">
+<source src="sounds/tap.mp3" type="audio/mpeg">
+</audio>
+<audio class="game_audio" id="audio_whoa" preload="auto">
+<source src="sounds/whoa.mp3" type="audio/mpeg">
+</audio>
+
 <div id="sprite1_div"><img id="sprite1_img" src=""></div>
 
 <div id="speech_bubble"></div>
@@ -390,7 +426,8 @@ function game_finish()
 <div id="score">Total Score: <span id="score_value">0</span>&nbsp;&nbsp;<canvas id="score_canvas" width="200" height="10"></canvas></div>
 
 <div id="timer">Time Left: <span id="timer_value">-</span>
-<span id="game_more_time"><button id="button_game_more_time" onclick="game_more_time()">Give me more time!</button></span>
+<span id="game_more_time"><button id="button_game_more_time" onclick="game_more_time()">More time!</button></span>
+<span id="sound_control"><input type="checkbox" id="sound_checkbox" checked="true"/>Sound</span>
 </div>
 
 <div id="game_controls">

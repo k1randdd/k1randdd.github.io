@@ -25,3 +25,5 @@ const GAME_CLUE_INTRO = "I am thinking of an Opera ...";
 
 const GAME_SECONDS_PER_QUESTION = 10;
 const GAME_SECONDS_PER_CLUE = 10;
+
+const GAME_ICON_IMAGE = "images/opera_conductor.png";

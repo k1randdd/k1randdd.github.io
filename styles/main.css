@@ -82,6 +82,8 @@ h1 {
   clear: both;
 }
 
+input[type="checkbox"] { transform: scale(2); margin: 10px; }
+
 button { font-size: large; }
 #button_game_start:enabled, #button_game_finish:enabled { color: blue; }
 
